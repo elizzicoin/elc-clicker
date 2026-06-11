@@ -56,7 +56,7 @@ button:hover{background:#444;}
 
 <script>
 // Конфигурация OAuth2
-const CLIENT_ID = '1514661552333131887'; // Замени на свой!
+const CLIENT_ID = '1514661552333131887';
 const REDIRECT_URI = encodeURIComponent('https://elizzicoin.github.io/elc-clicker/');
 const DISCORD_AUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=token&scope=identify`;
 
@@ -77,7 +77,6 @@ const accountNameEl = document.getElementById("accountName");
 const logoutBtn = document.getElementById("logoutBtn");
 const loginPrompt = document.getElementById("loginPrompt");
 
-// Загрузка/сохранение прогресса (привязано к Discord ID)
 function getStorageKey() {
     return `elc_${discordId}`;
 }
@@ -86,12 +85,14 @@ function loadGame() {
     if (!discordId) return;
     const saved = localStorage.getItem(getStorageKey());
     if (saved) {
-        const data = JSON.parse(saved);
-        balance = data.balance || 0;
-        maxEnergy = data.maxEnergy || 5000;
-        regen = data.regen || 1;
-        energy = data.energy !== undefined ? data.energy : maxEnergy;
-        skin = data.skin || "gold";
+        try {
+            const data = JSON.parse(saved);
+            balance = data.balance ?? 0;
+            maxEnergy = data.maxEnergy ?? 5000;
+            regen = data.regen ?? 1;
+            energy = data.energy ?? maxEnergy;
+            skin = data.skin ?? "gold";
+        } catch(e) { resetGame(); }
     } else {
         resetGame();
     }
@@ -110,14 +111,10 @@ function resetGame() {
 
 function saveGame() {
     if (!discordId) return;
-    const data = {
-        balance: balance,
-        maxEnergy: maxEnergy,
-        regen: regen,
-        energy: energy,
-        skin: skin
-    };
+    const data = { balance, maxEnergy, regen, energy, skin };
     localStorage.setItem(getStorageKey(), JSON.stringify(data));
+    // Отладка: проверяем, что сохранилось
+    console.log("Saved:", data);
 }
 
 function updateUI() {
@@ -159,10 +156,11 @@ coin.addEventListener("click", (e) => {
 
 // Регенерация энергии
 setInterval(() => {
-    if (!discordId) return;
-    energy = Math.min(maxEnergy, energy + regen);
-    updateUI();
-    saveGame();
+    if (discordId) {
+        energy = Math.min(maxEnergy, energy + regen);
+        updateUI();
+        saveGame();
+    }
 }, 1000);
 
 // OAuth2 функции
@@ -182,11 +180,13 @@ function handleDiscordCallback() {
             if (user.id) {
                 discordId = user.id;
                 discordUsername = user.username;
+                // Сохраняем Discord ID в localStorage, чтобы при перезагрузке не терять
+                localStorage.setItem('elc_discord_id', discordId);
+                localStorage.setItem('elc_discord_name', discordUsername);
                 loginPrompt.style.display = 'none';
                 logoutBtn.style.display = 'inline-block';
                 loadGame();
                 updateUI();
-                // Убираем токен из URL
                 window.location.hash = '';
             }
         })
@@ -194,22 +194,30 @@ function handleDiscordCallback() {
             console.error(err);
             alert('Failed to get Discord user info');
         });
+    } else {
+        // Проверяем, есть ли сохранённый Discord ID
+        const savedId = localStorage.getItem('elc_discord_id');
+        const savedName = localStorage.getItem('elc_discord_name');
+        if (savedId) {
+            discordId = savedId;
+            discordUsername = savedName;
+            loginPrompt.style.display = 'none';
+            logoutBtn.style.display = 'inline-block';
+            loadGame();
+            updateUI();
+        }
     }
 }
 
 function logout() {
     discordId = null;
     discordUsername = null;
+    localStorage.removeItem('elc_discord_id');
+    localStorage.removeItem('elc_discord_name');
     loginPrompt.style.display = 'block';
     logoutBtn.style.display = 'none';
-    balance = 0;
-    maxEnergy = 5000;
-    regen = 1;
-    energy = 5000;
-    skin = "gold";
-    coin.className = "coin gold";
+    resetGame();
     updateUI();
-    // Не удаляем сохранённые данные (они останутся при следующем логине)
 }
 
 // Магазин
@@ -246,13 +254,8 @@ function buyRegen(amount, cost) {
     saveGame();
 }
 
-// Проверяем, есть ли токен в URL (возврат с Discord)
-if (window.location.hash.includes('access_token')) {
-    handleDiscordCallback();
-}
-
-// Начальная проверка (если уже был логин — данные останутся)
-updateUI();
+// Запуск
+handleDiscordCallback();
 </script>
 </body>
-                                                                                                                                                                                                                                        </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             </html>
