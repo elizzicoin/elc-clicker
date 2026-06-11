@@ -4,494 +4,106 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ELC Clicker</title>
-
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#090909;
-color:white;
-overflow:hidden;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-.container{
-width:420px;
-max-width:100%;
-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:15px;
-}
-
-.account{
-font-size:18px;
-opacity:.9;
-margin-top:5px;
-}
-
-.balance{
-font-size:56px;
-font-weight:bold;
-margin-top:15px;
-}
-
-.currency{
-font-size:18px;
-opacity:.8;
-margin-bottom:20px;
-}
-
-.coin-area{
-flex:1;
-display:flex;
-justify-content:center;
-align-items:center;
-width:100%;
-}
-
-.coin{
-width:300px;
-height:300px;
-border-radius:50%;
-position:relative;
-cursor:pointer;
-transition:transform .08s ease;
-user-select:none;
-background:
-radial-gradient(circle at 30% 25%,
-#fff7a0 0%,
-#ffe04a 20%,
-#ffc107 55%,
-#db8d00 100%);
-box-shadow:
-0 0 60px rgba(255,215,0,.9),
-0 0 120px rgba(255,215,0,.5);
-}
-
-.coin::before{
-content:"E";
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-font-size:140px;
-font-weight:900;
-color:#d38800;
-}
-
-.coin::after{
-content:"";
-position:absolute;
-left:20px;
-top:20px;
-width:75%;
-height:75%;
-border-radius:50%;
-background:
-radial-gradient(
-circle at 30% 30%,
-rgba(255,255,255,.55),
-rgba(255,255,255,0) 70%
-);
-}
-
-.coin.gold{
-background:
-radial-gradient(circle at 30% 30%,#fff6a0,#ffd400 40%,#ffb100 70%,#cc8600);
-box-shadow:
-0 0 70px #ffd400,
-0 0 120px rgba(255,212,0,.7);
-}
-
-.coin.silver{
-background:
-radial-gradient(circle at 30% 30%,#ffffff,#d8d8d8 40%,#b8b8b8 70%,#888);
-box-shadow:
-0 0 70px #cfcfcf,
-0 0 120px rgba(220,220,220,.8);
-}
-
-.coin.black{
-background:
-radial-gradient(circle at 30% 30%,#555,#111 50%,#000 80%);
-box-shadow:
-0 0 70px white,
-0 0 120px rgba(255,255,255,.8);
-}
-
-.coin::before{
-content:"E";
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:120px;
-font-weight:bold;
-color:rgba(255,255,255,.65);
-}
-
-.floating{
-position:absolute;
-font-size:28px;
-font-weight:bold;
-pointer-events:none;
-animation:float 1s forwards;
-}
-
-@keyframes float{
-0%{
-opacity:1;
-transform:translateY(0);
-}
-100%{
-opacity:0;
-transform:translateY(-80px);
-}
-}
-
-.bottom{
-width:100%;
-padding:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:#1a1a1a;
-border-radius:16px;
-margin-bottom:10px;
-}
-
-.energy{
-font-size:20px;
-}
-
-.buttons{
-display:flex;
-gap:10px;
-}
-
-button{
-background:#333;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:10px;
-cursor:pointer;
-}
-
-button:hover{
-background:#444;
-}
-
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.8);
-justify-content:center;
-align-items:center;
-}
-
-.modal-content{
-background:#181818;
-width:350px;
-max-height:80vh;
-overflow:auto;
-padding:20px;
-border-radius:20px;
-}
-
-.item{
-padding:12px;
-background:#252525;
-margin:10px 0;
-border-radius:12px;
-cursor:pointer;
-}
-
-.item:hover{
-background:#333;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#090909;color:white;overflow:hidden;height:100vh;display:flex;justify-content:center;align-items:center;}
+.container{width:420px;max-width:100%;height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px;}
+.account{font-size:18px;opacity:.9;margin-top:5px;}
+.balance{font-size:56px;font-weight:bold;margin-top:15px;}
+.currency{font-size:18px;opacity:.8;margin-bottom:20px;}
+.coin-area{flex:1;display:flex;justify-content:center;align-items:center;width:100%;}
+.coin{width:300px;height:300px;border-radius:50%;position:relative;cursor:pointer;transition:transform .08s ease;user-select:none;background:radial-gradient(circle at 30% 25%,#fff7a0 0%,#ffe04a 20%,#ffc107 55%,#db8d00 100%);box-shadow:0 0 60px rgba(255,215,0,.9),0 0 120px rgba(255,215,0,.5);}
+.coin::before{content:"E";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:140px;font-weight:900;color:#d38800;}
+.coin::after{content:"";position:absolute;left:20px;top:20px;width:75%;height:75%;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);}
+.coin.gold{background:radial-gradient(circle at 30% 30%,#fff6a0,#ffd400 40%,#ffb100 70%,#cc8600);box-shadow:0 0 70px #ffd400,0 0 120px rgba(255,212,0,.7);}
+.coin.silver{background:radial-gradient(circle at 30% 30%,#ffffff,#d8d8d8 40%,#b8b8b8 70%,#888);box-shadow:0 0 70px #cfcfcf,0 0 120px rgba(220,220,220,.8);}
+.coin.black{background:radial-gradient(circle at 30% 30%,#555,#111 50%,#000 80%);box-shadow:0 0 70px white,0 0 120px rgba(255,255,255,.8);}
+.coin::before{content:"E";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:120px;font-weight:bold;color:rgba(255,255,255,.65);}
+.floating{position:absolute;font-size:28px;font-weight:bold;pointer-events:none;animation:float 1s forwards;}
+@keyframes float{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-80px);}}
+.bottom{width:100%;padding:10px;display:flex;justify-content:space-between;align-items:center;background:#1a1a1a;border-radius:16px;margin-bottom:10px;}
+.energy{font-size:20px;}
+.buttons{display:flex;gap:10px;}
+button{background:#333;color:white;border:none;padding:10px 15px;border-radius:10px;cursor:pointer;}
+button:hover{background:#444;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);justify-content:center;align-items:center;}
+.modal-content{background:#181818;width:350px;max-height:80vh;overflow:auto;padding:20px;border-radius:20px;}
+.item{padding:12px;background:#252525;margin:10px 0;border-radius:12px;cursor:pointer;}
+.item:hover{background:#333;}
 </style>
 </head>
 <body>
-
 <div class="container">
-
-<div class="account" id="account">
-Haven't Account
-</div>
-
-<div class="balance" id="balance">
-0
-</div>
-
-<div class="currency">
-ELC
-</div>
-
-<div class="coin-area">
-<div id="coin" class="coin gold"></div>
-</div>
-
+<div class="account" id="account">Haven't Account</div>
+<div class="balance" id="balance">0</div>
+<div class="currency">ELC</div>
+<div class="coin-area"><div id="coin" class="coin gold"></div></div>
 <div class="bottom">
-
-<div class="energy" id="energy">
-⚡ 5000
-</div>
-
-<div class="buttons">
-<button onclick="openSkins()">Skins</button>
-<button onclick="openUpgrades()">Upgrades</button>
-</div>
-
-</div>
-
-</div>
-
-<div class="modal" id="skinsModal">
-<div class="modal-content">
-
-<h2>Skins</h2>
-
-<div class="item" onclick="buySkin('silver',100)">
-Silver Coin — 100 ELC
-</div>
-
-<div class="item" onclick="buySkin('black',1000)">
-Black Coin — 1000 ELC
-</div>
-
-<button onclick="closeAll()">Close</button>
-
+<div class="energy" id="energy">⚡ 5000</div>
+<div class="buttons"><button onclick="openSkins()">Skins</button><button onclick="openUpgrades()">Upgrades</button></div>
 </div>
 </div>
-
-<div class="modal" id="upgradesModal">
-<div class="modal-content">
-
-<h2>Click Upgrades</h2>
-
-<div class="item" onclick="buyClick(0.2,20)">
-+0.2 / click — 20 ELC
-</div>
-
-<div class="item" onclick="buyClick(0.5,50)">
-+0.5 / click — 50 ELC
-</div>
-
-<div class="item" onclick="buyClick(1,100)">
-+1 / click — 100 ELC
-</div>
-
-<div class="item" onclick="buyClick(2,200)">
-+2 / click — 200 ELC
-</div>
-
-<h2>Energy</h2>
-
-<div class="item" onclick="buyEnergy(100,100)">
-+100 Energy — 100 ELC
-</div>
-
-<div class="item" onclick="buyEnergy(500,500)">
-+500 Energy — 500 ELC
-</div>
-
-<div class="item" onclick="buyEnergy(1000,1000)">
-+1000 Energy — 1000 ELC
-</div>
-
-<h2>Regeneration</h2>
-
-<div class="item" onclick="buyRegen(2,20)">
-2/sec — 20 ELC
-</div>
-
-<div class="item" onclick="buyRegen(5,50)">
-5/sec — 50 ELC
-</div>
-
-<div class="item" onclick="buyRegen(10,100)">
-10/sec — 100 ELC
-</div>
-
-<button onclick="closeAll()">Close</button>
-
-</div>
-</div>
-
+<div class="modal" id="skinsModal"><div class="modal-content"><h2>Skins</h2><div class="item" onclick="buySkin('silver',100)">Silver Coin — 100 ELC</div><div class="item" onclick="buySkin('black',1000)">Black Coin — 1000 ELC</div><button onclick="closeAll()">Close</button></div></div>
+<div class="modal" id="upgradesModal"><div class="modal-content"><h2>Click Upgrades</h2><div class="item" onclick="buyClick(0.2,20)">+0.2 / click — 20 ELC</div><div class="item" onclick="buyClick(0.5,50)">+0.5 / click — 50 ELC</div><div class="item" onclick="buyClick(1,100)">+1 / click — 100 ELC</div><div class="item" onclick="buyClick(2,200)">+2 / click — 200 ELC</div><h2>Energy</h2><div class="item" onclick="buyEnergy(100,100)">+100 Energy — 100 ELC</div><div class="item" onclick="buyEnergy(500,500)">+500 Energy — 500 ELC</div><div class="item" onclick="buyEnergy(1000,1000)">+1000 Energy — 1000 ELC</div><h2>Regeneration</h2><div class="item" onclick="buyRegen(2,20)">2/sec — 20 ELC</div><div class="item" onclick="buyRegen(5,50)">5/sec — 50 ELC</div><div class="item" onclick="buyRegen(10,100)">10/sec — 100 ELC</div><button onclick="closeAll()">Close</button></div></div>
 <script>
-
 let balance = parseFloat(localStorage.getItem("d1")) || 0;
 let account = localStorage.getItem("d2") || "";
-
-localStorage.setItem("d3", "0.1");
-
 let clickPower = 0.1;
-
 let maxEnergy = parseInt(localStorage.getItem("d5")) || 5000;
-
 let regen = parseInt(localStorage.getItem("d6")) || 1;
+let energy = parseInt(localStorage.getItem("energy")) || maxEnergy;
+let skin = localStorage.getItem("skin") || "gold";
+let purchased = JSON.parse(localStorage.getItem("clickBought") || "[]");
 
-let energy =
-parseInt(localStorage.getItem("energy")) || maxEnergy;
-
-let skin =
-localStorage.getItem("skin") || "gold";
-
-let purchased =
-JSON.parse(localStorage.getItem("clickBought") || "[]");
-
-const coin=document.getElementById("coin");
-
-coin.className="coin "+skin;
+const coin = document.getElementById("coin");
+coin.className = "coin " + skin;
 
 function update(){
-document.getElementById("balance").innerText=
-balance.toLocaleString(undefined,{
-minimumFractionDigits:2,
-maximumFractionDigits:2
+    document.getElementById("balance").innerText = balance.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById("energy").innerText = "⚡ " + energy;
+    document.getElementById("account").innerText = account || "Haven't Account";
+    localStorage.setItem("d1", balance);
+    localStorage.setItem("d2", account);
+    localStorage.setItem("d3", clickPower);
+    localStorage.setItem("d5", maxEnergy);
+    localStorage.setItem("d6", regen);
+    localStorage.setItem("energy", energy);
+}
+
+coin.addEventListener("click", (e) => {
+    if(energy <= 0) return;
+    energy--;
+    balance += clickPower;
+    const rect = coin.getBoundingClientRect();
+    const x = e.clientX - (rect.left + rect.width/2);
+    const y = e.clientY - (rect.top + rect.height/2);
+    coin.style.transform = `translate(${x/30}px,${y/30}px) scale(0.96)`;
+    setTimeout(() => coin.style.transform = "translate(0px,0px) scale(1)", 80);
+    const txt = document.createElement("div");
+    txt.className = "floating";
+    txt.innerText = "+" + clickPower;
+    txt.style.left = e.clientX + "px";
+    txt.style.top = e.clientY + "px";
+    document.body.appendChild(txt);
+    setTimeout(() => txt.remove(), 1000);
+    update();
 });
 
-document.getElementById("energy").innerText=
-"⚡ "+energy;
+setInterval(() => {
+    energy = Math.min(maxEnergy, energy + regen);
+    update();
+}, 1000);
 
-document.getElementById("account").innerText=
-account || "Haven't Account";
+function openSkins(){ skinsModal.style.display = "flex"; }
+function openUpgrades(){ upgradesModal.style.display = "flex"; }
+function closeAll(){ skinsModal.style.display = "none"; upgradesModal.style.display = "none"; }
+function buySkin(type,cost){ if(balance<cost) return; balance-=cost; skin=type; coin.className="coin "+type; localStorage.setItem("skin",type); update(); }
+function buyClick(add,cost){ let key="c"+add; if(purchased.includes(key)){ alert("Already bought"); return; } if(balance<cost) return; balance-=cost; clickPower+=add; purchased.push(key); localStorage.setItem("clickBought", JSON.stringify(purchased)); update(); }
+function buyEnergy(add,cost){ if(balance<cost) return; balance-=cost; maxEnergy+=add; energy+=add; update(); }
+function buyRegen(amount,cost){ if(balance<cost) return; balance-=cost; regen=amount; update(); }
 
-localStorage.setItem("d1",balance);
-localStorage.setItem("d2",account);
-localStorage.setItem("d3",clickPower);
-localStorage.setItem("d5",maxEnergy);
-localStorage.setItem("d6",regen);
-localStorage.setItem("energy",energy);
-}
-
-coin.addEventListener("click",(e)=>{
-
-if(energy<=0)return;
-
-energy--;
-
-balance+=clickPower;
-
-const rect=coin.getBoundingClientRect();
-
-const x=e.clientX-(rect.left+rect.width/2);
-const y=e.clientY-(rect.top+rect.height/2);
-
-coin.style.transform=
-`translate(${x/30}px,${y/30}px) scale(0.96)`;
-
-setTimeout(()=>{
-coin.style.transform=
-"translate(0px,0px) scale(1)";
-},80);
-
-const txt=document.createElement("div");
-txt.className="floating";
-txt.innerText="+"+clickPower;
-
-txt.style.left=e.clientX+"px";
-txt.style.top=e.clientY+"px";
-
-document.body.appendChild(txt);
-
-setTimeout(()=>txt.remove(),1000);
-
-update();
-});
-
-setInterval(()=>{
-energy=Math.min(maxEnergy,energy+regen);
-update();
-},1000);
-
-function openSkins(){
-skinsModal.style.display="flex";
-}
-
-function openUpgrades(){
-upgradesModal.style.display="flex";
-}
-
-function closeAll(){
-skinsModal.style.display="none";
-upgradesModal.style.display="none";
-}
-
-function buySkin(type,cost){
-
-if(balance<cost)return;
-
-balance-=cost;
-skin=type;
-
-coin.className="coin "+type;
-
-localStorage.setItem("skin",type);
-
-update();
-}
-
-function buyClick(add,cost){
-
-let key="c"+add;
-
-if(purchased.includes(key)){
-alert("Already bought");
-return;
-}
-
-if(balance<cost)return;
-
-balance-=cost;
-clickPower+=add;
-
-purchased.push(key);
-
-localStorage.setItem(
-"clickBought",
-JSON.stringify(purchased)
-);
-
-update();
-}
-
-function buyEnergy(add,cost){
-
-if(balance<cost)return;
-
-balance-=cost;
-
-maxEnergy+=add;
-energy+=add;
-
-update();
-}
-
-function buyRegen(amount,cost){
-
-if(balance<cost)return;
-
-balance-=cost;
-
-regen=amount;
-
-update();
-}
-
-async function loadHaveFile() {
+// Загрузка из файла только при добавлении аккаунта
+async function loadFromFile() {
     try {
         const response = await fetch('have.txt');
         if (!response.ok) return;
@@ -500,39 +112,32 @@ async function loadHaveFile() {
         for (const line of lines) {
             const trimmed = line.trim();
             if (trimmed === '') continue;
-            const parts = trimmed.split(':');
-            if (parts.length >= 2 && parts[0] === account) {
-                const command = parts[1];
-                const value = parseFloat(parts[2]);
-                if (command === 'energy' && !isNaN(value)) {
-                    energy = Math.min(maxEnergy, energy + value);
-                    update();
-                } else if (command === 'regen' && !isNaN(value)) {
-                    regen = value;
-                    update();
-                } else if (!isNaN(parseFloat(command))) {
-                    balance += parseFloat(command);
-                    update();
-                }
+            // Формат: NICKNAME | ELC
+            const parts = trimmed.split('|');
+            if (parts.length !== 2) continue;
+            const nick = parts[0].trim();
+            const elc = parseFloat(parts[1].trim());
+            if (nick === account && !isNaN(elc)) {
+                balance += elc;
+                update();
+                break;
             }
         }
     } catch (error) {}
 }
 
-if(!account){
-setTimeout(()=>{
-let nick=prompt("Discord nickname (optional):");
-if(nick){
-account=nick;
-update();
-loadHaveFile(); // Читаем файл ТОЛЬКО когда аккаунт добавляется
-}
-},500);
+if (!account) {
+    setTimeout(() => {
+        let nick = prompt("Discord nickname (optional):");
+        if (nick) {
+            account = nick;
+            update();
+            loadFromFile(); // Только когда аккаунт добавляется
+        }
+    }, 500);
 }
 
 update();
-
 </script>
-
 </body>
-    </html>
+</html>
