@@ -7,23 +7,22 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#090909;color:white;overflow:hidden;height:100vh;display:flex;justify-content:center;align-items:center;}
-.container{width:420px;max-width:100%;height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px;}
+.container{width:420px;max-width:100%;height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px;padding-bottom:20px;overflow-y:auto;box-sizing:border-box;}
 .account{font-size:16px;opacity:.9;margin-top:5px;display:flex;gap:10px;align-items:center;}
 .logout-btn{background:#333;padding:4px 8px;border-radius:8px;font-size:12px;cursor:pointer;}
 .logout-btn:hover{background:#444;}
 .balance{font-size:56px;font-weight:bold;margin-top:15px;}
 .currency{font-size:18px;opacity:.8;margin-bottom:20px;}
-.coin-area{flex:1;display:flex;justify-content:center;align-items:center;width:100%;}
-.coin{width:300px;height:300px;border-radius:50%;position:relative;cursor:pointer;transition:transform .08s ease;user-select:none;background:radial-gradient(circle at 30% 25%,#fff7a0 0%,#ffe04a 20%,#ffc107 55%,#db8d00 100%);box-shadow:0 0 60px rgba(255,215,0,.9),0 0 120px rgba(255,215,0,.5);}
-.coin::before{content:"E";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:140px;font-weight:900;color:#d38800;}
+.coin-area{flex:1;display:flex;justify-content:center;align-items:center;width:100%;min-height:250px;}
+.coin{width:280px;height:280px;border-radius:50%;position:relative;cursor:pointer;transition:transform .08s ease;user-select:none;background:radial-gradient(circle at 30% 25%,#fff7a0 0%,#ffe04a 20%,#ffc107 55%,#db8d00 100%);box-shadow:0 0 60px rgba(255,215,0,.9),0 0 120px rgba(255,215,0,.5);}
+.coin::before{content:"E";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:120px;font-weight:900;color:rgba(0,0,0,.3);}
 .coin::after{content:"";position:absolute;left:20px;top:20px;width:75%;height:75%;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);}
 .coin.gold{background:radial-gradient(circle at 30% 30%,#fff6a0,#ffd400 40%,#ffb100 70%,#cc8600);box-shadow:0 0 70px #ffd400,0 0 120px rgba(255,212,0,.7);}
 .coin.silver{background:radial-gradient(circle at 30% 30%,#ffffff,#d8d8d8 40%,#b8b8b8 70%,#888);box-shadow:0 0 70px #cfcfcf,0 0 120px rgba(220,220,220,.8);}
 .coin.black{background:radial-gradient(circle at 30% 30%,#555,#111 50%,#000 80%);box-shadow:0 0 70px white,0 0 120px rgba(255,255,255,.8);}
-.coin::before{content:"E";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:120px;font-weight:bold;color:rgba(255,255,255,.65);}
 .floating{position:absolute;font-size:28px;font-weight:bold;pointer-events:none;animation:float 1s forwards;}
 @keyframes float{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-80px);}}
-.bottom{width:100%;padding:10px;display:flex;justify-content:space-between;align-items:center;background:#1a1a1a;border-radius:16px;margin-bottom:10px;}
+.bottom{width:100%;padding:10px;display:flex;justify-content:space-between;align-items:center;background:#1a1a1a;border-radius:16px;margin-top:10px;margin-bottom:10px;}
 .energy{font-size:20px;}
 .buttons{display:flex;gap:10px;}
 button{background:#333;color:white;border:none;padding:10px 15px;border-radius:10px;cursor:pointer;}
