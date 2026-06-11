@@ -48,7 +48,7 @@ button:hover{background:#444;}
 <script>
 let balance = parseFloat(localStorage.getItem("d1")) || 0;
 let account = localStorage.getItem("d2") || "";
-let clickPower = parseFloat(localStorage.getItem("d3")) || 0.01;
+let clickPower = 0.01;
 let maxEnergy = parseInt(localStorage.getItem("d5")) || 5000;
 let regen = parseInt(localStorage.getItem("d6")) || 1;
 let energy = parseInt(localStorage.getItem("energy")) || maxEnergy;
@@ -102,7 +102,6 @@ function buyClick(add,cost){ let key="c"+add; if(purchased.includes(key)){ alert
 function buyEnergy(add,cost){ if(balance<cost) return; balance-=cost; maxEnergy+=add; energy+=add; update(); }
 function buyRegen(amount,cost){ if(balance<cost) return; balance-=cost; regen=amount; update(); }
 
-// Загрузка из have.txt при добавлении аккаунта
 async function loadFromFile() {
     try {
         const response = await fetch('have.txt?_=' + Date.now());
@@ -139,4 +138,4 @@ if (!account) {
 update();
 </script>
 </body>
-    </html>
+</html>
