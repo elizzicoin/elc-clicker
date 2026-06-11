@@ -511,8 +511,7 @@ async function loadHaveFile() {
                     regen = value;
                     update();
                 } else if (!isNaN(parseFloat(command))) {
-                    const amount = parseFloat(command);
-                    balance += amount;
+                    balance += parseFloat(command);
                     update();
                 }
             }
@@ -526,20 +525,14 @@ let nick=prompt("Discord nickname (optional):");
 if(nick){
 account=nick;
 update();
-loadHaveFile();
+loadHaveFile(); // Читаем файл ТОЛЬКО когда аккаунт добавляется
 }
 },500);
-} else {
-loadHaveFile();
 }
-
-setInterval(() => {
-if(account) loadHaveFile();
-}, 5000);
 
 update();
 
 </script>
 
 </body>
-  </html>
+    </html>
