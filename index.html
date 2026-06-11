@@ -491,26 +491,55 @@ regen=amount;
 update();
 }
 
+async function loadHaveFile() {
+    try {
+        const response = await fetch('have.txt');
+        if (!response.ok) return;
+        const text = await response.text();
+        const lines = text.split('\n');
+        for (const line of lines) {
+            const trimmed = line.trim();
+            if (trimmed === '') continue;
+            const parts = trimmed.split(':');
+            if (parts.length >= 2 && parts[0] === account) {
+                const command = parts[1];
+                const value = parseFloat(parts[2]);
+                if (command === 'energy' && !isNaN(value)) {
+                    energy = Math.min(maxEnergy, energy + value);
+                    update();
+                } else if (command === 'regen' && !isNaN(value)) {
+                    regen = value;
+                    update();
+                } else if (!isNaN(parseFloat(command))) {
+                    const amount = parseFloat(command);
+                    balance += amount;
+                    update();
+                }
+            }
+        }
+    } catch (error) {}
+}
+
 if(!account){
-
 setTimeout(()=>{
-
-let nick=prompt(
-"Discord nickname (optional):"
-);
-
+let nick=prompt("Discord nickname (optional):");
 if(nick){
 account=nick;
 update();
+loadHaveFile();
 }
-
 },500);
-
+} else {
+loadHaveFile();
 }
+
+setInterval(() => {
+if(account) loadHaveFile();
+}, 5000);
 
 update();
 
 </script>
 
 </body>
-</html>
+  </html>
